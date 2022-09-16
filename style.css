@@ -163,14 +163,10 @@ header {
 .expanded {
   display: none;
   position: relative;
-  width: 100%;
   border-radius: 5px;
   max-width: 667px;
   bottom: 69px;
   margin-right: 20px;
-
-  /* TODO enlever le width*/
-  width: 667px;
 
   flex-direction: column;
 }
