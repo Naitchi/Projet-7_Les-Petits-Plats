@@ -1,13 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/icon/logo.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les petits plats</title>
+  <script src="https://kit.fontawesome.com/bf63fdfe50.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header>
+    <img src="/img/logo.svg" alt="logo 'Les petits plats'">
+  </header>
+  <nav>
+    <div class="search-bar">
+      <input id="search-input" type="text" placeholder="Rechercher une recette">
+      <img id="search" src="/icon/search.svg" alt="logo de loupe pour recherche">
+    </div>
+    <div id="tags"></div>
+    <div class="dropdowns">
+      <div>
+        <div id="ingredientDD" class="dropdown">
+          <p> Ingredient </p>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div class="hide">
+          <div id="ingredient" class="expanded">
+            <div class="top">
+              <input id="inputIngredient" class="DDInput" placeholder="Rechercher un ingrédient" type="text">
+              <i id="closeIngredientDD" class="fa-solid fa-chevron-up"></i>
+            </div>
+            <div id="ingredientElements" class="elements">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id="appareilDD" class="dropdown">
+          <p> Appareils </p>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div class="hide">
+          <div id="appareil" class="expanded">
+            <div class="top">
+              <input id="inputAppareil" class="DDInput" placeholder="Rechercher un appareil" type="text">
+              <i id="closeAppareilDD" class="fa-solid fa-chevron-up"></i>
+            </div>
+            <div id="appareilElements" class="elements">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id="ustensileDD" class="dropdown">
+          <p> Ustensiles </p>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div class="hide">
+          <div id="ustensile" class="expanded">
+            <div class="top">
+              <input id="inputUstensile" class="DDInput" placeholder="Rechercher un ustensile" type="text">
+              <i id="closeUstensileDD" class="fa-solid fa-chevron-up"></i>
+            </div>
+            <div id="ustensileElements" class="elements">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <div id="main"></div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+
 </html>
