@@ -183,6 +183,7 @@ header {
   line-height: 22px;
   color: white;
   width: 200px;
+  text-transform: capitalize;
 }
 
 .hide {
