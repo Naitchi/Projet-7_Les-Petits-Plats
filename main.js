@@ -3,7 +3,7 @@ import './style.css';
 import { recipes } from './recipes.js';
 
 const main = document.querySelector('#main');
-const searchInput = document.querySelector('search-input');
+const searchInput = document.querySelector('#search-input');
 const tags = document.querySelector('#tags');
 
 const ingredientDD = document.querySelector('#ingredientDD');
@@ -23,6 +23,7 @@ const ustensileInput = document.querySelector('#inputUstensile');
 const appareilInput = document.querySelector('#inputAppareil');
 
 const listFilter = [];
+let searchFilter = [];
 
 const createCard = (data) => {
   const card = document.createElement('div');
@@ -103,7 +104,7 @@ const createTag = (element, type) => {
     tag.remove();
     const indexOfDelete = listFilter.map((e) => e.value).indexOf(element);
     listFilter.splice(indexOfDelete, 1);
-    displayResult(applyFilter(recipes));
+    applySearchFilter();
   });
 };
 const toggleDropDown = (element) => {
@@ -204,12 +205,12 @@ const insertElements = (idName, nameElementDOM, list) => {
               const indexOfDelete = listFilter.map((e) => e.value).indexOf(list[i]);
               listFilter.splice(indexOfDelete, 1);
               alreadyCreated = true;
-              displayResult(applyFilter(recipes));
+              applySearchFilter();
             }
           });
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'ingredient');
-            displayResult(applyFilter(recipes));
+            applySearchFilter();
           }
         });
       } else if (nameElementDOM === '#ustensileElements') {
@@ -222,12 +223,12 @@ const insertElements = (idName, nameElementDOM, list) => {
               const indexOfDelete = listFilter.map((e) => e.value).indexOf(list[i]);
               listFilter.splice(indexOfDelete, 1);
               alreadyCreated = true;
-              displayResult(applyFilter(recipes));
+              applySearchFilter();
             }
           });
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'ustensile');
-            displayResult(applyFilter(recipes));
+            applySearchFilter();
           }
         });
       } else if (nameElementDOM === '#appareilElements') {
@@ -240,12 +241,12 @@ const insertElements = (idName, nameElementDOM, list) => {
               const indexOfDelete = listFilter.map((e) => e.value).indexOf(list[i]);
               listFilter.splice(indexOfDelete, 1);
               alreadyCreated = true;
-              displayResult(applyFilter(recipes));
+              applySearchFilter();
             }
           });
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'appareil');
-            displayResult(applyFilter(recipes));
+            applySearchFilter();
           }
         });
       }
@@ -253,6 +254,30 @@ const insertElements = (idName, nameElementDOM, list) => {
   }
 };
 
+const applySearchFilter = () => {
+  searchFilter = searchInput.value.split(' ');
+  let i = 0;
+  let x = 0;
+  const resultSearchBar = [];
+  if (searchFilter.length > 0)
+    while (i < recipes.length) {
+      x = 0;
+      let needed = true;
+      while (x < searchFilter.length) {
+        if (
+          recipes[i].name.toLowerCase().search(searchFilter[x].toLowerCase()) === -1 &&
+          recipes[i].description.toLowerCase().search(searchFilter[x].toLowerCase()) === -1
+        )
+          needed = false;
+        x++;
+      }
+      if (needed) resultSearchBar.push(recipes[i]);
+      i++;
+    }
+  if (!searchFilter.length) resultSearchBar = recipes;
+  const finalResult = applyFilter(resultSearchBar);
+  displayResult(finalResult);
+};
 const applyFilter = (data) => {
   const result = [];
   data.map((recipe) => {
@@ -342,3 +367,5 @@ appareilInput.addEventListener('input', (e) => {
     getFilteredAppareil(recipes, appareilInput.value),
   );
 });
+
+searchInput.addEventListener('input', (e) => applySearchFilter());
