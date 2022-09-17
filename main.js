@@ -162,7 +162,6 @@ const getFilteredUstensile = (data, filter) => {
   const result = list.filter((e) => {
     if (e.search(filter.toLowerCase()) !== -1) return true;
   });
-  console.log(result);
   return result;
 };
 const getFilteredAppareil = (data, filter) => {
@@ -174,7 +173,6 @@ const getFilteredAppareil = (data, filter) => {
   const result = list.filter((e) => {
     if (e.search(filter.toLowerCase()) !== -1) return true;
   });
-  console.log(result);
   return result;
 };
 
@@ -267,8 +265,6 @@ const applyFilter = (data) => {
           needed = false;
         }
       } else if (e.type === 'ustensile') {
-        console.log(e.value);
-        console.log(recipe.ustensils);
         if (recipe.ustensils.indexOf(e.value) === -1) {
           needed = false;
         }
