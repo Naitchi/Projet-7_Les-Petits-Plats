@@ -253,18 +253,16 @@ const insertElements = (idName, nameElementDOM, list) => {
 };
 
 const applySearchFilter = () => {
-  searchFilter = searchInput.value.split(' ');
+  searchFilter = searchInput.value;
   const resultSearchBar = [];
   if (searchFilter.length > 0)
     recipes.forEach((recipe) => {
       let needed = true;
-      searchFilter.forEach((word) => {
-        if (
-          recipe.name.toLowerCase().search(word.toLowerCase()) === -1 &&
-          recipe.description.toLowerCase().search(word.toLowerCase()) === -1
-        )
-          needed = false;
-      });
+      if (
+        recipe.name.toLowerCase().search(searchFilter.toLowerCase()) === -1 &&
+        recipe.description.toLowerCase().search(searchFilter.toLowerCase()) === -1
+      )
+        needed = false;
       if (needed) resultSearchBar.push(recipe);
     });
   if (!searchFilter.length) resultSearchBar = recipes;
