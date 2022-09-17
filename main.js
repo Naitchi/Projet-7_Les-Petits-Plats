@@ -256,9 +256,9 @@ const applySearchFilter = () => {
   searchFilter = searchInput.value.split(' ');
   const resultSearchBar = [];
   if (searchFilter.length > 0)
-    recipes.map((recipe) => {
+    recipes.forEach((recipe) => {
       let needed = true;
-      searchFilter.map((word) => {
+      searchFilter.forEach((word) => {
         if (
           recipe.name.toLowerCase().search(word.toLowerCase()) === -1 &&
           recipe.description.toLowerCase().search(word.toLowerCase()) === -1
@@ -273,7 +273,7 @@ const applySearchFilter = () => {
 };
 const applyFilter = (data) => {
   const result = [];
-  data.map((recipe) => {
+  data.forEach((recipe) => {
     let needed = true;
     listFilter.forEach((e) => {
       if (e.type === 'ingredient') {
