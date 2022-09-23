@@ -1,5 +1,3 @@
-import './style.css';
-
 import { recipes } from './recipes.js';
 
 const main = document.querySelector('#main');
