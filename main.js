@@ -41,7 +41,7 @@ const createCard = (data) => {
   header.classList.add('header');
   h3.innerHTML = data.name;
   time.classList.add('timeDiv');
-  minuteur.setAttribute('src', 'icon/minuteur.svg');
+  minuteur.setAttribute('src', 'public/icon/minuteur.svg');
   body.classList.add('desc');
   bodyleft.classList.add('bodyleft');
   bodyright.classList.add('bodyright');
@@ -80,7 +80,7 @@ const createTag = (element, type) => {
   const name = document.createElement('p');
   const close = document.createElement('img');
 
-  close.setAttribute('src', 'icon/close.svg');
+  close.setAttribute('src', 'public/icon/close.svg');
   close.classList.add('close');
   name.classList.add('tagName');
   name.innerHTML = element;
