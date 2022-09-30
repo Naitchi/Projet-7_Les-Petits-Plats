@@ -206,6 +206,7 @@ const insertElements = (idName, nameElementDOM, list) => {
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'ingredient');
             displayResult(applyFilter(recipes));
+            ingredientInput.value = '';
           }
         });
       } else if (nameElementDOM === '#ustensileElements') {
@@ -224,6 +225,7 @@ const insertElements = (idName, nameElementDOM, list) => {
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'ustensile');
             displayResult(applyFilter(recipes));
+            ustensileInput.value = '';
           }
         });
       } else if (nameElementDOM === '#appareilElements') {
@@ -242,6 +244,7 @@ const insertElements = (idName, nameElementDOM, list) => {
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'appareil');
             displayResult(applyFilter(recipes));
+            appareilInput.value = '';
           }
         });
       }
