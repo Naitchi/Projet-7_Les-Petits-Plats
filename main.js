@@ -257,17 +257,21 @@ const applyFilter = (data) => {
       if (e.type === 'ingredient') {
         if (
           recipe.ingredients.filter((obj) => {
-            if (obj.ingredient.toLowerCase() === e.value) return true;
+            if (obj.ingredient.toLowerCase() === e.value.toLowerCase()) return true;
           }).length === 0
         ) {
           needed = false;
         }
       } else if (e.type === 'ustensile') {
-        if (recipe.ustensils.indexOf(e.value) === -1) {
+        if (
+          recipe.ustensils.filter((obj) => {
+            if (obj.toLowerCase() === e.value.toLowerCase()) return true;
+          }).length === 0
+        ) {
           needed = false;
         }
       } else if (e.type === 'appareil') {
-        if (recipe.appliance.toLowerCase() !== e.value) {
+        if (recipe.appliance.toLowerCase() !== e.value.toLowerCase()) {
           needed = false;
         }
       }
@@ -276,6 +280,9 @@ const applyFilter = (data) => {
       result.push(recipe);
     }
   });
+  insertElements('ingredientElement', '#ingredientElements', getAllIngredient(result));
+  insertElements('ustensileElement', '#ustensileElements', getAllUstensile(result));
+  insertElements('appareilElement', '#appareilElements', getAllAppareil(result));
   if (!listFilter.length) return data;
   if (!result.length) {
     // TODO message d'erreur (aucun résultat ne correspond à votre recherche)
