@@ -172,6 +172,9 @@ const getFilteredAppareil = (data, filter) => {
   const result = list.filter((e) => {
     if (e.search(filter.toLowerCase()) !== -1) return true;
   });
+  if (list.length === 0) {
+    return applySearchFilter();
+  }
   return result;
 };
 
@@ -243,6 +246,7 @@ const insertElements = (idName, nameElementDOM, list) => {
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'appareil');
             applySearchFilter();
+            appareilInput.value = '';
           }
         });
       }
