@@ -332,15 +332,15 @@ displayResult(recipes);
 // TODO faire un fonction qui s'assure que les autres sont fermé quand on ouvre un DD via autre chose que des toggle
 ingredientDD.addEventListener('click', (e) => {
   toggleDropDown(ingredient);
-  insertElements('ingredientElement', '#ingredientElements', getAllIngredient(recipes));
+  insertElements('ingredientElement', '#ingredientElements', getAllIngredient(applySearchFilter()));
 });
 ustensileDD.addEventListener('click', (e) => {
   toggleDropDown(ustensile);
-  insertElements('ustensileElement', '#ustensileElements', getAllUstensile(recipes));
+  insertElements('ustensileElement', '#ustensileElements', getAllUstensile(applySearchFilter()));
 });
 appareilDD.addEventListener('click', (e) => {
   toggleDropDown(appareil);
-  insertElements('appareilElement', '#appareilElements', getAllAppareil(recipes));
+  insertElements('appareilElement', '#appareilElements', getAllAppareil(applySearchFilter()));
 });
 
 closeIngredientDD.addEventListener('click', (e) => toggleDropDown(ingredient));
