@@ -246,7 +246,6 @@ const insertElements = (idName, nameElementDOM, list) => {
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'appareil');
             applySearchFilter();
-            appareilInput.value = '';
           }
         });
       }
