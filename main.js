@@ -253,7 +253,7 @@ const insertElements = (idName, nameElementDOM, list) => {
 const applySearchFilter = () => {
   searchFilter = searchInput.value;
   let i = 0;
-  const resultSearchBar = [];
+  let resultSearchBar = [];
   if (searchFilter.length > 0)
     while (i < recipes.length) {
       let needed = true;
@@ -267,7 +267,12 @@ const applySearchFilter = () => {
     }
   if (!searchFilter.length) resultSearchBar = recipes;
   const finalResult = applyFilter(resultSearchBar);
+  insertElements('ingredientElement', '#ingredientElements', getAllIngredient(finalResult));
+  insertElements('ustensileElement', '#ustensileElements', getAllUstensile(finalResult));
+  insertElements('appareilElement', '#appareilElements', getAllAppareil(finalResult));
   displayResult(finalResult);
+  console.log(finalResult);
+  return finalResult;
 };
 const applyFilter = (data) => {
   const result = [];
