@@ -1,7 +1,7 @@
 import { recipes } from './recipes.js';
 
 const main = document.querySelector('#main');
-const searchInput = document.querySelector('search-input');
+const searchInput = document.querySelector('#search-input');
 const tags = document.querySelector('#tags');
 
 const ingredientDD = document.querySelector('#ingredientDD');
@@ -21,6 +21,7 @@ const ustensileInput = document.querySelector('#inputUstensile');
 const appareilInput = document.querySelector('#inputAppareil');
 
 const listFilter = [];
+let searchFilter = [];
 
 const createCard = (data) => {
   const card = document.createElement('div');
@@ -74,6 +75,7 @@ const createP = (content, css) => {
   if (css) p.classList.add(css);
   return p;
 };
+
 const createTag = (element, type) => {
   const tag = document.createElement('div');
   const name = document.createElement('p');
@@ -101,21 +103,13 @@ const createTag = (element, type) => {
     tag.remove();
     const indexOfDelete = listFilter.map((e) => e.value).indexOf(element);
     listFilter.splice(indexOfDelete, 1);
-    displayResult(applyFilter(recipes));
+    insertElements('ingredientElement', '#ingredientElements');
+    insertElements('ustensileElement', '#ustensileElements');
+    insertElements('appareilElement', '#appareilElements');
   });
 };
 const toggleDropDown = (element) => {
   element.classList.toggle('display');
-};
-
-const getAllUstensile = (data) => {
-  const list = [];
-  data.forEach((recipe) => {
-    recipe.ustensils.forEach((ustensil) => {
-      if (list.indexOf(ustensil.toLowerCase()) === -1) list.push(ustensil.toLowerCase());
-    });
-  });
-  return list;
 };
 const getAllIngredient = (data) => {
   const list = [];
@@ -123,6 +117,15 @@ const getAllIngredient = (data) => {
     recipe.ingredients.forEach((obj) => {
       if (list.indexOf(obj.ingredient.toLowerCase()) === -1)
         list.push(obj.ingredient.toLowerCase());
+    });
+  });
+  return list;
+};
+const getAllUstensile = (data) => {
+  const list = [];
+  data.forEach((recipe) => {
+    recipe.ustensils.forEach((ustensil) => {
+      if (list.indexOf(ustensil.toLowerCase()) === -1) list.push(ustensil.toLowerCase());
     });
   });
   return list;
@@ -136,7 +139,7 @@ const getAllAppareil = (data) => {
   return list;
 };
 
-// fonction pour trouver quel ingredient/ustensile/appareil existe dans le json
+// fonction pour trouver quel ingredient/ustensile/appareil existe dans le json en fonction de l'input
 const getFilteredIngredient = (data, filter) => {
   const list = [];
   data.forEach((recipe) => {
@@ -178,7 +181,29 @@ const deleteSpace = (str) => {
   return str.replace(/ /g, '');
 };
 
-const insertElements = (idName, nameElementDOM, list) => {
+const insertElements = (idName, nameElementDOM) => {
+  const elements = applySearchFilter();
+  let list = [];
+  switch (nameElementDOM) {
+    case '#ingredientElements':
+      console.log(ingredientInput.value);
+      if (ingredientInput.value.length !== 0)
+        list = getFilteredIngredient(elements, ingredientInput.value);
+      else list = getAllIngredient(elements);
+      break;
+    case '#ustensileElements':
+      console.log(ustensileInput.value);
+      if (ustensileInput.value.length !== 0)
+        list = getFilteredUstensile(elements, ustensileInput.value);
+      else list = getAllUstensile(elements);
+      break;
+    case '#appareilElements':
+      console.log(appareilInput.value);
+      if (appareilInput.value.length !== 0)
+        list = getFilteredAppareil(elements, appareilInput.value);
+      else list = getAllAppareil(elements);
+      break;
+  }
   const elementDOM = document.querySelector(nameElementDOM);
   if (elementDOM.hasChildNodes()) {
     while (elementDOM.firstChild) {
@@ -200,13 +225,11 @@ const insertElements = (idName, nameElementDOM, list) => {
               const indexOfDelete = listFilter.map((e) => e.value).indexOf(list[i]);
               listFilter.splice(indexOfDelete, 1);
               alreadyCreated = true;
-              displayResult(applyFilter(recipes));
             }
           });
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'ingredient');
-            displayResult(applyFilter(recipes));
-            ingredientInput.value = '';
+            insertElements('ingredientElement', '#ingredientElements');
           }
         });
       } else if (nameElementDOM === '#ustensileElements') {
@@ -219,13 +242,11 @@ const insertElements = (idName, nameElementDOM, list) => {
               const indexOfDelete = listFilter.map((e) => e.value).indexOf(list[i]);
               listFilter.splice(indexOfDelete, 1);
               alreadyCreated = true;
-              displayResult(applyFilter(recipes));
             }
           });
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'ustensile');
-            displayResult(applyFilter(recipes));
-            ustensileInput.value = '';
+            insertElements('ustensileElement', '#ustensileElements');
           }
         });
       } else if (nameElementDOM === '#appareilElements') {
@@ -238,23 +259,24 @@ const insertElements = (idName, nameElementDOM, list) => {
               const indexOfDelete = listFilter.map((e) => e.value).indexOf(list[i]);
               listFilter.splice(indexOfDelete, 1);
               alreadyCreated = true;
-              displayResult(applyFilter(recipes));
             }
           });
           if (!alreadyCreated) {
             createTag(p.innerHTML, 'appareil');
-            displayResult(applyFilter(recipes));
-            appareilInput.value = '';
+            insertElements('appareilElement', '#appareilElements');
           }
         });
       }
     }
   }
+  applySearchFilter();
 };
+
+const applySearchFilter = () => {};
 
 const applyFilter = (data) => {
   const result = [];
-  data.map((recipe) => {
+  data.forEach((recipe) => {
     let needed = true;
     listFilter.forEach((e) => {
       if (e.type === 'ingredient') {
@@ -283,9 +305,6 @@ const applyFilter = (data) => {
       result.push(recipe);
     }
   });
-  insertElements('ingredientElement', '#ingredientElements', getAllIngredient(result));
-  insertElements('ustensileElement', '#ustensileElements', getAllUstensile(result));
-  insertElements('appareilElement', '#appareilElements', getAllAppareil(result));
   if (!listFilter.length) return data;
   if (!result.length) {
     // TODO message d'erreur (aucun résultat ne correspond à votre recherche)
@@ -304,21 +323,20 @@ const displayResult = (data) => {
   });
 };
 
-// TODO faire une fonction init la premiere fois
 displayResult(recipes);
 
 // TODO faire un fonction qui s'assure que les autres sont fermé quand on ouvre un DD via autre chose que des toggle
 ingredientDD.addEventListener('click', (e) => {
   toggleDropDown(ingredient);
-  insertElements('ingredientElement', '#ingredientElements', getAllIngredient(recipes));
+  insertElements('ingredientElement', '#ingredientElements');
 });
 ustensileDD.addEventListener('click', (e) => {
   toggleDropDown(ustensile);
-  insertElements('ustensileElement', '#ustensileElements', getAllUstensile(recipes));
+  insertElements('ustensileElement', '#ustensileElements');
 });
 appareilDD.addEventListener('click', (e) => {
   toggleDropDown(appareil);
-  insertElements('appareilElement', '#appareilElements', getAllAppareil(recipes));
+  insertElements('appareilElement', '#appareilElements');
 });
 
 closeIngredientDD.addEventListener('click', (e) => toggleDropDown(ingredient));
@@ -326,23 +344,17 @@ closeUstensileDD.addEventListener('click', (e) => toggleDropDown(ustensile));
 closeAppareilDD.addEventListener('click', (e) => toggleDropDown(appareil));
 
 ingredientInput.addEventListener('input', (e) => {
-  insertElements(
-    'ingredientElement',
-    '#ingredientElements',
-    getFilteredIngredient(recipes, ingredientInput.value),
-  );
+  insertElements('ingredientElement', '#ingredientElements');
 });
 ustensileInput.addEventListener('input', (e) => {
-  insertElements(
-    'ustensileElement',
-    '#ustensileElements',
-    getFilteredUstensile(recipes, ustensileInput.value),
-  );
+  insertElements('ustensileElement', '#ustensileElements');
 });
 appareilInput.addEventListener('input', (e) => {
-  insertElements(
-    'appareilElement',
-    '#appareilElements',
-    getFilteredAppareil(recipes, appareilInput.value),
-  );
+  insertElements('appareilElement', '#appareilElements');
+});
+
+searchInput.addEventListener('input', (e) => {
+  insertElements('ingredientElement', '#ingredientElements');
+  insertElements('ustensileElement', '#ustensileElements');
+  insertElements('appareilElement', '#appareilElements');
 });
