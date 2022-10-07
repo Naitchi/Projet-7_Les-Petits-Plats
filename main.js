@@ -272,7 +272,6 @@ const insertElements = (idName, nameElementDOM) => {
   applySearchFilter();
 };
 
-<<<<<<< HEAD
 const applySearchFilter = () => {
   searchFilter = searchInput.value;
   let i = 0;
@@ -297,10 +296,6 @@ const applySearchFilter = () => {
   console.log(finalResult);
   return finalResult;
 };
-=======
-const applySearchFilter = () => {};
-
->>>>>>> master
 const applyFilter = (data) => {
   const result = [];
   data.forEach((recipe) => {
