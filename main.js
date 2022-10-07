@@ -370,4 +370,8 @@ appareilInput.addEventListener('input', (e) => {
   insertElements('appareilElement', '#appareilElements');
 });
 
-searchInput.addEventListener('input', (e) => applySearchFilter());
+searchInput.addEventListener('input', (e) => {
+  insertElements('ingredientElement', '#ingredientElements');
+  insertElements('ustensileElement', '#ustensileElements');
+  insertElements('appareilElement', '#appareilElements');
+});
