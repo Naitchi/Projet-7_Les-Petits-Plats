@@ -1,29 +1,18 @@
-import { recipes } from './recipes.js';
-
-const main = document.querySelector('#main');
-const searchInput = document.querySelector('#search-input');
-const tags = document.querySelector('#tags');
-
-const ingredientDD = document.querySelector('#ingredientDD');
-const ustensileDD = document.querySelector('#ustensileDD');
-const appareilDD = document.querySelector('#appareilDD');
-
-const closeIngredientDD = document.querySelector('#closeIngredientDD');
-const closeUstensileDD = document.querySelector('#closeUstensileDD');
-const closeAppareilDD = document.querySelector('#closeAppareilDD');
-
-const ingredient = document.querySelector('#ingredient');
-const ustensile = document.querySelector('#ustensile');
-const appareil = document.querySelector('#appareil');
-
-const ingredientInput = document.querySelector('#inputIngredient');
-const ustensileInput = document.querySelector('#inputUstensile');
-const appareilInput = document.querySelector('#inputAppareil');
+import {
+  appareilInput,
+  ingredientInput,
+  main,
+  noResult,
+  searchInput,
+  tags,
+  ustensileInput,
+} from '../data/DOM_elements.js';
+import { recipes } from '../data/recipes.js';
 
 const listFilter = [];
 let searchFilter = [];
 
-const createCard = (data) => {
+export const createCard = (data) => {
   const card = document.createElement('div');
   const img = document.createElement('div');
   const bottom = document.createElement('div');
@@ -69,14 +58,14 @@ const createCard = (data) => {
 
   return card;
 };
-const createP = (content, css) => {
+export const createP = (content, css) => {
   const p = document.createElement('p');
   p.innerHTML = content;
   if (css) p.classList.add(css);
   return p;
 };
 
-const createTag = (element, type) => {
+export const createTag = (element, type) => {
   const tag = document.createElement('div');
   const name = document.createElement('p');
   const close = document.createElement('img');
@@ -108,10 +97,10 @@ const createTag = (element, type) => {
     insertElements('appareilElement', '#appareilElements');
   });
 };
-const toggleDropDown = (element) => {
+export const toggleDropDown = (element) => {
   element.classList.toggle('display');
 };
-const getAllIngredient = (data) => {
+export const getAllIngredient = (data) => {
   const list = [];
   data.forEach((recipe) => {
     recipe.ingredients.forEach((obj) => {
@@ -121,7 +110,7 @@ const getAllIngredient = (data) => {
   });
   return list;
 };
-const getAllUstensile = (data) => {
+export const getAllUstensile = (data) => {
   const list = [];
   data.forEach((recipe) => {
     recipe.ustensils.forEach((ustensil) => {
@@ -130,7 +119,7 @@ const getAllUstensile = (data) => {
   });
   return list;
 };
-const getAllAppareil = (data) => {
+export const getAllAppareil = (data) => {
   const list = [];
   data.forEach((recipe) => {
     if (list.indexOf(recipe.appliance.toLowerCase()) === -1)
@@ -140,7 +129,7 @@ const getAllAppareil = (data) => {
 };
 
 // fonction pour trouver quel ingredient/ustensile/appareil existe dans le json en fonction de l'input
-const getFilteredIngredient = (data, filter) => {
+export const getFilteredIngredient = (data, filter) => {
   const list = [];
   data.forEach((recipe) => {
     recipe.ingredients.forEach((obj) => {
@@ -153,7 +142,7 @@ const getFilteredIngredient = (data, filter) => {
   });
   return result;
 };
-const getFilteredUstensile = (data, filter) => {
+export const getFilteredUstensile = (data, filter) => {
   const list = [];
   data.forEach((recipe) => {
     recipe.ustensils.forEach((ustensil) => {
@@ -165,7 +154,7 @@ const getFilteredUstensile = (data, filter) => {
   });
   return result;
 };
-const getFilteredAppareil = (data, filter) => {
+export const getFilteredAppareil = (data, filter) => {
   const list = [];
   data.forEach((recipe) => {
     if (list.indexOf(recipe.appliance.toLowerCase()) === -1)
@@ -177,28 +166,25 @@ const getFilteredAppareil = (data, filter) => {
   return result;
 };
 
-const deleteSpace = (str) => {
+export const deleteSpace = (str) => {
   return str.replace(/ /g, '');
 };
 
-const insertElements = (idName, nameElementDOM) => {
+export const insertElements = (idName, nameElementDOM) => {
   const elements = applySearchFilter();
   let list = [];
   switch (nameElementDOM) {
     case '#ingredientElements':
-      console.log(ingredientInput.value);
       if (ingredientInput.value.length !== 0)
         list = getFilteredIngredient(elements, ingredientInput.value);
       else list = getAllIngredient(elements);
       break;
     case '#ustensileElements':
-      console.log(ustensileInput.value);
       if (ustensileInput.value.length !== 0)
         list = getFilteredUstensile(elements, ustensileInput.value);
       else list = getAllUstensile(elements);
       break;
     case '#appareilElements':
-      console.log(appareilInput.value);
       if (appareilInput.value.length !== 0)
         list = getFilteredAppareil(elements, appareilInput.value);
       else list = getAllAppareil(elements);
@@ -272,9 +258,30 @@ const insertElements = (idName, nameElementDOM) => {
   applySearchFilter();
 };
 
-const applySearchFilter = () => {};
-
-const applyFilter = (data) => {
+export const applySearchFilter = () => {
+  searchFilter = searchInput.value;
+  let i = 0;
+  let resultSearchBar = [];
+  if (searchFilter.length > 0)
+    while (i < recipes.length) {
+      let needed = true;
+      if (
+        recipes[i].name.toLowerCase().search(searchFilter.toLowerCase()) === -1 &&
+        recipes[i].description.toLowerCase().search(searchFilter.toLowerCase()) === -1
+      )
+        needed = false;
+      if (needed) resultSearchBar.push(recipes[i]);
+      i++;
+    }
+  if (!searchFilter.length) resultSearchBar = recipes;
+  const finalResult = applyFilter(resultSearchBar);
+  if (!finalResult.length) {
+    displayNoResult();
+  } else deleteNoResult();
+  displayResult(finalResult);
+  return finalResult;
+};
+export const applyFilter = (data) => {
   const result = [];
   data.forEach((recipe) => {
     let needed = true;
@@ -306,13 +313,17 @@ const applyFilter = (data) => {
     }
   });
   if (!listFilter.length) return data;
-  if (!result.length) {
-    // TODO message d'erreur (aucun résultat ne correspond à votre recherche)
-  }
   return result;
 };
 
-const displayResult = (data) => {
+export const displayNoResult = () => {
+  noResult.classList.add('show');
+};
+export const deleteNoResult = () => {
+  noResult.classList.remove('show');
+};
+
+export const displayResult = (data) => {
   if (main.hasChildNodes()) {
     while (main.firstChild) {
       main.removeChild(main.lastChild);
@@ -322,39 +333,3 @@ const displayResult = (data) => {
     main.appendChild(createCard(e));
   });
 };
-
-displayResult(recipes);
-
-// TODO faire un fonction qui s'assure que les autres sont fermé quand on ouvre un DD via autre chose que des toggle
-ingredientDD.addEventListener('click', (e) => {
-  toggleDropDown(ingredient);
-  insertElements('ingredientElement', '#ingredientElements');
-});
-ustensileDD.addEventListener('click', (e) => {
-  toggleDropDown(ustensile);
-  insertElements('ustensileElement', '#ustensileElements');
-});
-appareilDD.addEventListener('click', (e) => {
-  toggleDropDown(appareil);
-  insertElements('appareilElement', '#appareilElements');
-});
-
-closeIngredientDD.addEventListener('click', (e) => toggleDropDown(ingredient));
-closeUstensileDD.addEventListener('click', (e) => toggleDropDown(ustensile));
-closeAppareilDD.addEventListener('click', (e) => toggleDropDown(appareil));
-
-ingredientInput.addEventListener('input', (e) => {
-  insertElements('ingredientElement', '#ingredientElements');
-});
-ustensileInput.addEventListener('input', (e) => {
-  insertElements('ustensileElement', '#ustensileElements');
-});
-appareilInput.addEventListener('input', (e) => {
-  insertElements('appareilElement', '#appareilElements');
-});
-
-searchInput.addEventListener('input', (e) => {
-  insertElements('ingredientElement', '#ingredientElements');
-  insertElements('ustensileElement', '#ustensileElements');
-  insertElements('appareilElement', '#appareilElements');
-});
