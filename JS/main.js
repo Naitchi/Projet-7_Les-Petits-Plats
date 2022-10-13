@@ -12,9 +12,9 @@ import {
   ustensile,
   ustensileDD,
   ustensileInput,
-} from './DOM_elements.js';
-import { displayResult, insertElements, toggleDropDown } from './functions.js';
-import { recipes } from './recipes.js';
+} from './data/DOM_elements.js';
+import { displayResult, insertElements, toggleDropDown } from './functions/functions.js';
+import { recipes } from './data/recipes.js';
 
 displayResult(recipes);
 

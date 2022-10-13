@@ -5,8 +5,8 @@ import {
   searchInput,
   tags,
   ustensileInput,
-} from './DOM_elements.js';
-import { recipes } from './recipes.js';
+} from '../data/DOM_elements.js';
+import { recipes } from '../data/recipes.js';
 
 const listFilter = [];
 let searchFilter = [];
