@@ -2,6 +2,7 @@ import {
   appareilInput,
   ingredientInput,
   main,
+  noResult,
   searchInput,
   tags,
   ustensileInput,
@@ -274,6 +275,9 @@ export const applySearchFilter = () => {
     }
   if (!searchFilter.length) resultSearchBar = recipes;
   const finalResult = applyFilter(resultSearchBar);
+  if (!finalResult.length) {
+    displayNoResult();
+  } else deleteNoResult();
   displayResult(finalResult);
   return finalResult;
 };
@@ -309,10 +313,14 @@ export const applyFilter = (data) => {
     }
   });
   if (!listFilter.length) return data;
-  if (!result.length) {
-    // TODO message d'erreur (aucun résultat ne correspond à votre recherche)
-  }
   return result;
+};
+
+export const displayNoResult = () => {
+  noResult.classList.add('show');
+};
+export const deleteNoResult = () => {
+  noResult.classList.remove('show');
 };
 
 export const displayResult = (data) => {

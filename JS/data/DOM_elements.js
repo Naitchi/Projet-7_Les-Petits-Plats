@@ -17,3 +17,5 @@ export const appareil = document.querySelector('#appareil');
 export const ingredientInput = document.querySelector('#inputIngredient');
 export const ustensileInput = document.querySelector('#inputUstensile');
 export const appareilInput = document.querySelector('#inputAppareil');
+
+export const noResult = document.querySelector('#noResult');
