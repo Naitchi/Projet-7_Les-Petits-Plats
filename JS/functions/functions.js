@@ -5,6 +5,7 @@ import {
   searchInput,
   tags,
   ustensileInput,
+  noResult,
 } from '../data/DOM_elements.js';
 import { recipes } from '../data/recipes.js';
 
@@ -272,6 +273,9 @@ export const applySearchFilter = () => {
     });
   if (!searchFilter.length) resultSearchBar = recipes;
   const finalResult = applyFilter(resultSearchBar);
+  if (!finalResult.length) {
+    displayNoResult();
+  } else deleteNoResult();
   displayResult(finalResult);
   return finalResult;
 };
@@ -312,6 +316,13 @@ export const applyFilter = (data) => {
     // TODO message d'erreur (aucun résultat ne correspond à votre recherche)
   }
   return result;
+};
+
+export const displayNoResult = () => {
+  noResult.classList.add('show');
+};
+export const deleteNoResult = () => {
+  noResult.classList.remove('show');
 };
 
 export const displayResult = (data) => {

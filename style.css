@@ -1,3 +1,14 @@
+#noResult {
+  display: none;
+  color: #242424;
+  text-align: center;
+  margin: 100px;
+}
+
+.show {
+  display: block !important;
+}
+
 .close {
   display: block;
   width: 20px;
